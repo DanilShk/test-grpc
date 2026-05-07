@@ -36,6 +36,10 @@ Only the producer port (`3000`) is exposed to the host. The producer reaches the
 Build and start:
 
 ```bash
+git pull https://github.com/DanilShk/test-grpc.git
+```
+
+```bash
 create .env file  based on .env.example 
 ```
 
