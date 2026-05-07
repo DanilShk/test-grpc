@@ -1,0 +1,29 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY tsconfig*.json nest-cli.json ./
+COPY apps ./apps
+COPY libs ./libs
+
+RUN npx nest build consumer
+
+
+FROM node:20-alpine AS runtime
+
+WORKDIR /usr/src/app
+
+ENV NODE_ENV=production
+
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/libs/proto/src ./libs/proto/src
+
+EXPOSE 50050
+
+CMD ["node", "dist/apps/consumer/main"]
