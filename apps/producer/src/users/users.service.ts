@@ -12,14 +12,20 @@ export class UsersService {
   constructor(@Inject(USERS_PACKAGE_TOKEN) private client: ClientGrpc) {}
 
   onModuleInit() {
-    this.usersService = this.client.getService<UsersServiceClient>('UsersService');
+    this.usersService =
+      this.client.getService<UsersServiceClient>('UsersService');
   }
 
   getFilteredUsers() {
-    const users =  JSON.parse(readFileSync(path.resolve(process.cwd(), 'apps/producer/src/data/users.json'), 'utf8'));
+    const users = JSON.parse(
+      readFileSync(
+        path.resolve(process.cwd(), 'apps/producer/src/data/users.json'),
+        'utf8',
+      ),
+    );
 
     const filteredUsers = users.filter((user: any) => user.age > 18);
 
-    return this.usersService.getFilteredUsers({users: filteredUsers});
+    return this.usersService.getFilteredUsers({ users: filteredUsers });
   }
 }
