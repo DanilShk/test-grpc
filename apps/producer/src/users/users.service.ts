@@ -24,7 +24,7 @@ export class UsersService {
       ),
     );
 
-    const filteredUsers = users.filter((user: any) => user.age > 18);
+    const filteredUsers = users.filter((user: any) => user.age >= 18);
 
     return this.usersService.getFilteredUsers({ users: filteredUsers });
   }
