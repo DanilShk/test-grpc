@@ -14,7 +14,10 @@ import { USERS_PACKAGE_TOKEN } from '../const/tokens.const';
         transport: Transport.GRPC,
         options: {
           package: USERS_PACKAGE_NAME,
-          protoPath: path.resolve(process.cwd(), 'libs/proto/src/users/users.proto'),
+          protoPath: path.resolve(
+            process.cwd(),
+            'libs/proto/src/users/users.proto',
+          ),
           url: process.env.GRPC_USERS_URL ?? '0.0.0.0:50050',
         },
       },
