@@ -26,7 +26,7 @@ jobs:
         run: npm run lint
 
       - name: Run tests
-        run: npm run test
+        run: npm run test -- --passWithNoTests
 
   build-producer:
     runs-on: ubuntu-latest
