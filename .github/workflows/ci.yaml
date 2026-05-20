@@ -91,3 +91,25 @@ jobs:
           tags: |
             ghcr.io/${{ env.OWNER }}/${{ github.event.repository.name }}-consumer:latest
             ghcr.io/${{ env.OWNER }}/${{ github.event.repository.name }}-consumer:${{ github.sha }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build-producer, build-consumer]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /myapp
+            git pull
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose pull
+            docker compose up -d --remove-orphans

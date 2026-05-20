@@ -1,23 +1,19 @@
 services:
   consumer:
-    build:
-      context: .
-      dockerfile: apps/consumer/dockerfile
+    image: ghcr.io/danilshk/test-grpc-consumer:latest
     container_name: grpc-consumer
     restart: unless-stopped
     networks:
       - grpc-net
 
   producer:
-    build:
-      context: .
-      dockerfile: apps/producer/dockerfile
+    image: ghcr.io/danilshk/test-grpc-producer:latest
     container_name: grpc-producer
     restart: unless-stopped
     env_file:
       - .env
     ports:
-      - "3000:${PORT}"
+      - '3000:${PORT}'
     depends_on:
       - consumer
     networks:
