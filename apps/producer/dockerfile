@@ -6,13 +6,13 @@ COPY package*.json ./
 RUN npm ci
 
 COPY tsconfig*.json nest-cli.json ./
-COPY apps ./apps
+COPY apps/producer ./apps/producer
 COPY libs ./libs
 
 RUN npx nest build producer
 
 
-FROM node:20-alpine AS runtime
+FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
